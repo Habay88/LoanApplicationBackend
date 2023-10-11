@@ -44,11 +44,15 @@ public class ProjectSecurityConfig {
                 })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers( "/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
-                .authorizeHttpRequests((requests)->requests
-                        .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/contact", "/user").authenticated()
-                        .requestMatchers("/notices", "/register").permitAll())
-                .formLogin(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
+                .authorizeHttpRequests()
+                        .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
+                        .requestMatchers("/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
+                        .requestMatchers("/myLoans").hasAuthority("VIEWLOANS")
+                        .requestMatchers("/myCards").hasAuthority("VIEWCARDS")
+                        .requestMatchers("/user").authenticated()
+                        .requestMatchers("/notices","contact" ,"/register").permitAll()
+                .and().formLogin()
+                .and().httpBasic();
         return http.build();
     }
 
