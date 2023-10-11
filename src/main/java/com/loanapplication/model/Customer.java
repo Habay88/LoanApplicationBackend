@@ -91,4 +91,13 @@ public class Customer {
     public void setCreateDt(String createDt) {
         this.createDt = createDt;
     }
+
+	public Set<Authority> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authority> authorities) {
+		this.authorities = authorities;
+	}
+    
 }

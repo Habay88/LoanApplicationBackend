@@ -12,11 +12,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.loanapplication.model.Authority;
 import com.loanapplication.model.Customer;
 import com.loanapplication.repository.CustomerRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class LoanBankUsernamePwdAuthenticationProvider implements AuthenticationProvider {
@@ -34,9 +37,8 @@ public class LoanBankUsernamePwdAuthenticationProvider implements Authentication
         List<Customer> customer = customerRepository.findByEmail(username);
         if (customer.size() > 0) {
             if (passwordEncoder.matches(pwd, customer.get(0).getPwd())) {
-                List<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(customer.get(0).getRole()));
-                return new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+           
+                return new UsernamePasswordAuthenticationToken(username, pwd,getGrantedAuthorities(customer.get(0).getAuthorities()));
             } else {
                 throw new BadCredentialsException("Invalid password!");
             }
@@ -45,7 +47,16 @@ public class LoanBankUsernamePwdAuthenticationProvider implements Authentication
         }
     }
 
-    @Override
+    private List<GrantedAuthority> getGrantedAuthorities(Set<Authority> authorities) {
+		// TODO Auto-generated method stub
+    	List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+    	for(Authority authority : authorities) {
+    		grantedAuthorities.add(new SimpleGrantedAuthority(authority.getName()));
+    	}
+		return grantedAuthorities;
+	}
+
+	@Override
     public boolean supports(Class<?> authentication) {
         return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
     }
