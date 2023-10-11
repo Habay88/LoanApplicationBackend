@@ -1,0 +1,19 @@
+server:
+  port: 8084
+
+spring:
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:3306/loanbankingdb?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+   
+    hibernate:
+      ddl-auto: update
+      
+#  security:
+#    user:
+#      name: habay
+#      password: habay
+ 
