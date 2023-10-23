@@ -12,8 +12,5 @@ spring:
     hibernate:
       ddl-auto: update
       
-#  security:
-#    user:
-#      name: habay
-#      password: habay
+
  
