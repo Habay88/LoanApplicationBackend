@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.loanapplication.filter.CsrfCookieFilter;
+import com.loanapplication.filter.RequestValidationBeforeFilter;
 
 import java.util.Collections;
 
@@ -44,6 +45,7 @@ public class ProjectSecurityConfig {
                 })).csrf((csrf) -> csrf.csrfTokenRequestHandler(requestHandler).ignoringRequestMatchers("/contact","/register")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                        .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                         .authorizeHttpRequests((requests)->requests
 						/*
 						 * .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")

@@ -7,7 +7,7 @@ import java.util.Base64;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.StringUtils;
-
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
