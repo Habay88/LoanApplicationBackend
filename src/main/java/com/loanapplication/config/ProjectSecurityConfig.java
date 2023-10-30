@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.loanapplication.filter.AuthoritiesLoggingAfterFilter;
+import com.loanapplication.filter.AuthoritiesLoggingAtFilter;
 import com.loanapplication.filter.CsrfCookieFilter;
 import com.loanapplication.filter.RequestValidationBeforeFilter;
 
@@ -47,6 +48,7 @@ public class ProjectSecurityConfig {
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                         .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                         .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
+                        .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                         .authorizeHttpRequests((requests)->requests
 						/*
