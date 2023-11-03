@@ -47,6 +47,7 @@ public class ProjectSecurityConfig {
                         .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                         .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGenerationFilter(),BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                         .authorizeHttpRequests((requests)->requests
 						/*
 						 * .requestMatchers("/myAccount").hasAuthority("VIEWACCOUNT")
