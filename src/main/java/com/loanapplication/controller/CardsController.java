@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loanapplication.model.Cards;
+import com.loanapplication.model.Customer;
 import com.loanapplication.repository.CardsRepository;
+import com.loanapplication.repository.CustomerRepository;
 
 import java.util.List;
 
@@ -16,15 +18,20 @@ public class CardsController {
 
     @Autowired
     private CardsRepository cardsRepository;
+    @Autowired
+	 private CustomerRepository customerRepository;
 
     @GetMapping("/myCards")
-    public List<Cards> getCardDetails(@RequestParam int id) {
-        List<Cards> cards = cardsRepository.findByCustomerId(id);
+    public List<Cards> getCardDetails(@RequestParam String email) {
+    	List<Customer> customers = customerRepository.findByEmail(email);
+    	if(customers == null && !customers.isEmpty()) {
+        List<Cards> cards = cardsRepository.findByCustomerId(customers.get(0).getId());
         if (cards != null ) {
             return cards;
-        }else {
+        }
+    	}
             return null;
         }
     }
 
-}
+

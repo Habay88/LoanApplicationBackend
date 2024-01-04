@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loanapplication.model.Customer;
 import com.loanapplication.model.Loans;
+import com.loanapplication.repository.CustomerRepository;
 import com.loanapplication.repository.LoanRepository;
 
 import java.util.List;
@@ -17,16 +19,19 @@ public class LoansController {
 
     @Autowired
     private LoanRepository loanRepository;
-
+    @Autowired
+	 private CustomerRepository customerRepository;
     @GetMapping("/myLoans")
     @PostAuthorize("hasRole('USER')")
-    public List<Loans> getLoanDetails(@RequestParam int id) {
-        List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(id);
+    public List<Loans> getLoanDetails(@RequestParam String email) {
+    	List<Customer> customers = customerRepository.findByEmail(email);
+    	if(customers != null && !customers.isEmpty()) {
+        List<Loans> loans = loanRepository.findByCustomerIdOrderByStartDtDesc(customers.get(0).getId());
         if (loans != null ) {
             return loans;
-        }else {
+        }}
             return null;
         }
     }
 
-}
+
